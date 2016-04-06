@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.tlal.vms.vms.sys.supers.log.dao.LogDAO"><!-- 映射到手工编写的映射器UserDAO -->
+	<!-- 分页查找Car -->
+	<select id="findLogByPage" parameterType="com.tlal.vms.vms.sys.supers.log.action.SuperLogSearch" 
+							   resultType="com.tlal.vms.vms.sys.supers.log.entity.LogDTO">
+		SELECT ID,OPERATOR,OPERATE_TIME,OPERATE_CONTENT,OPERATE_TYPE
+			FROM LOG
+			 <where>
+				  <!-- 如果汽车状态输入不为空 -->
+				  <if test='operate_type != null and !"default".equals(operate_type)'>
+				  	OPERATE_TYPE=#{operate_type}
+				  </if>
+			  </where>
+			ORDER BY OPERATE_TIME DESC
+			LIMIT #{startRow},#{pageSize}
+	</select>
+	
+	<!-- 查看车辆的数量 -->
+	<select id="countLogs" parameterType="com.tlal.vms.vms.sys.supers.log.action.SuperLogSearch" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM LOG
+			<where>
+			  <!-- 如果汽车状态输入不为空 -->
+			  <if test='operate_type != null and !"default".equals(operate_type)'>
+			  	OPERATE_TYPE=#{operate_type}
+			  </if>
+		  	</where>
+	</select>
+	
+	<!-- 添加Car记录 -->
+	<insert id="addLog" parameterType="com.tlal.vms.vms.sys.supers.log.entity.LogDTO">
+		 INSERT INTO LOG
+		 (	 
+		 	 ID,OPERATOR,OPERATE_TIME,
+		 	 OPERATE_CONTENT,OPERATE_TYPE
+		 ) 
+		 VALUES
+		 (	 #{id,jdbcType=VARCHAR},
+			 #{operator,jdbcType=VARCHAR},
+			 #{operate_time,jdbcType=TIMESTAMP},
+			 #{operate_content,jdbcType=VARCHAR},
+			 #{operate_type,jdbcType=VARCHAR}
+	 	 )	 		
+	</insert>
+</mapper>

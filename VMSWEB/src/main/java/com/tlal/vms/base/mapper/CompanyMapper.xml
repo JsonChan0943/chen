@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.tlal.vms.vms.sys.supers.company.dao.CompanyDAO"><!-- 映射到手工编写的映射器UserDAO -->
+	<!-- 分页查找Car -->
+	<select id="findCompanyByPage" parameterType="com.tlal.vms.vms.sys.supers.company.action.SuperCompanySearch" 
+							   resultType="com.tlal.vms.vms.sys.supers.company.dto.Company">
+		SELECT COMPANY_ID,COMPANY_NAME,ADDRESS,TELEPHONE,MANAGER
+			FROM COMPANY
+			 <where>
+			 	  <!-- 如果公司名字输入不为空 -->
+				  <if test='company_name != null and !"".equals(company_name)'>
+				  	and COMPANY_NAME LIKE '%${company_name}%'
+				  </if>
+				  <!-- 如果公司地址输入不为空 -->
+				  <if test='address != null and !"".equals(address)'>
+				  	and ADDRESS LIKE '%${address}%'
+				  </if>
+				  <!-- 如果公司电话输入不为空 -->
+				  <if test='telephone != null and !"".equals(telephone)'>
+				  	and TELEPHONE LIKE '%${telephone}%'
+				  </if>
+				  <!-- 如果公司总经理输入不为空 -->
+				  <if test='manager != null and !"".equals(manager)'>
+				  	and MANAGER LIKE '%${manager}%'
+				  </if>
+			  </where>
+			LIMIT #{startRow},#{pageSize}
+	</select>
+	<!-- 查看车辆的数量 -->
+	<select id="countCompany" parameterType="com.tlal.vms.vms.sys.supers.company.action.SuperCompanySearch" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM COMPANY
+		  <where>
+		 	  <!-- 如果公司名字输入不为空 -->
+			  <if test='company_name != null and !"".equals(company_name)'>
+			  	and COMPANY_NAME LIKE '%${company_name}%'
+			  </if>
+			  <!-- 如果公司地址输入不为空 -->
+			  <if test='address != null and !"".equals(address)'>
+			  	and ADDRESS LIKE '%${address}%'
+			  </if>
+			  <!-- 如果公司电话输入不为空 -->
+			  <if test='telephone != null and !"".equals(telephone)'>
+			  	and TELEPHONE LIKE '%${telephone}%'
+			  </if>
+			  <!-- 如果公司总经理输入不为空 -->
+			  <if test='manager != null and !"".equals(manager)'>
+			  	and MANAGER LIKE '%${manager}%'
+			  </if>
+		  </where>
+	</select>
+	
+	<insert id="addCompany" parameterType="com.tlal.vms.vms.sys.supers.company.dto.Company">
+		INSERT INTO COMPANY
+		 (	 
+		 	 COMPANY_ID,COMPANY_NAME,ADDRESS,TELEPHONE,MANAGER
+		 ) 
+		 VALUES
+		 (	 #{company_id,jdbcType=VARCHAR},
+			 #{company_name,jdbcType=VARCHAR},
+			 #{address,jdbcType=VARCHAR},
+			 #{telephone,jdbcType=VARCHAR},
+			 #{manager,jdbcType=VARCHAR}
+	 	 )	 
+	</insert>
+	
+	<select id="findCompanyById" parameterType="java.lang.String" resultType="com.tlal.vms.vms.sys.supers.company.dto.Company">
+		SELECT COMPANY_ID,COMPANY_NAME,ADDRESS,TELEPHONE,MANAGER
+			FROM COMPANY
+			WHERE COMPANY_ID = #{company_id} 
+	</select>
+	
+	<delete id="deleteCompanyById" parameterType="java.lang.String">
+			DELETE FROM COMPANY
+				WHERE COMPANY_ID = #{company_id}
+	</delete>
+	
+	<update id="updateCompany" parameterType="com.tlal.vms.vms.sys.supers.company.dto.Company">
+		UPDATE COMPANY SET
+			COMPANY_NAME = #{company_name,jdbcType=VARCHAR},
+			ADDRESS = #{address,jdbcType=VARCHAR},
+			TELEPHONE = #{telephone,jdbcType=VARCHAR},
+		 	MANAGER = #{manager,jdbcType=VARCHAR}
+ 			WHERE COMPANY_ID = #{company_id}
+	</update>
+	
+	<select id="findAllCompany"   resultType="com.tlal.vms.vms.sys.supers.company.dto.Company">
+		SELECT COMPANY_ID,COMPANY_NAME,ADDRESS,TELEPHONE,MANAGER
+			FROM COMPANY
+	</select>
+</mapper>

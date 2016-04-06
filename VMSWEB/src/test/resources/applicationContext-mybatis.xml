@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:tx="http://www.springframework.org/schema/tx" 
+		xmlns:aop="http://www.springframework.org/schema/aop"
+		xmlns:context="http://www.springframework.org/schema/context" 
+		xmlns:mvc="http://www.springframework.org/schema/mvc"
+		xmlns:util="http://www.springframework.org/schema/util"
+		xsi:schemaLocation="
+			http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+			http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+			http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+			http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+			http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+	<!-- 连接池 -->
+	<util:properties id="jdbcProperties" location="classpath:jdbc.properties"/>
+	<bean id="myDataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+		<property name="url" value="#{jdbcProperties.url}"/>
+		<property name="username" value="#{jdbcProperties.username}"/>
+		<property name="password" value="#{jdbcProperties.password}"/>
+	</bean>
+	
+	<!-- 为整个应用提供SqlSession对象资源 --><!-- 相当于SqlConfigXml配置文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<!-- 指定连接资源 -->
+		<property name="dataSource" ref="myDataSource"></property>
+		<!-- 指定映射文件 -->
+		<property name="mapperLocations" value="classpath:com/tlal/vms/base/mapper/*.xml"></property>
+	</bean>
+	
+	<!-- 批量扫描Mapper接口 生成Dao实例  Dao实例的名字为接口名首字母小写-->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<!-- 扫描这个包下的所有接口 -->
+		<property name="basePackage" value="com.tlal.vms"></property>
+		<!-- 指定只扫描被@MyBatisRepository注解的Mapper -->
+		<property name="annotationClass" value="com.tlal.vms.base.annotation.MyBatisRepository"></property> 
+	</bean>
+	
+	<!-- 声明式事物配置 
+	<tx:annotation-driven transaction-manager="txManager"/>
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="myDataSource"></property>
+	</bean>
+	-->
+</beans>

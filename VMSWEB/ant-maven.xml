@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Maven可执行命令集  -->
+<project name="maven-commands" default="maven-U"  basedir="." xmlns:artifact="urn:maven-artifact-ant">
+<!--Maven clean-->
+<target name="maven-U">
+	<!--通过maven命令调用-->
+	<echo>------------------------------------START----------------------------------</echo>
+	<property name="parject_path" location=".\" />
+	<echo>开始 forced-updates</echo>
+	 <exec dir="${parject_path}" executable="cmd.exe">
+	 	<arg line="/c mvn -U -e"/>
+	 </exec>
+	<echo>forced-updates 成功！</echo>
+	<echo>------------------------------------END----------------------------------</echo>
+</target>
+<!--Maven clean-->
+<target name="maven-clean">
+	<!--通过maven命令调用-->
+	<echo>------------------------------------START----------------------------------</echo>
+	<property name="parject_path" location=".\" />
+	<echo>开始 clean</echo>
+	 <exec dir="${parject_path}" executable="cmd.exe">
+	 	<arg line="/c mvn clean -U -e -v"/>
+	 </exec>
+	<echo>clean 成功！</echo>
+	<echo>------------------------------------END----------------------------------</echo>
+</target>
+<!--Maven package-->
+<target name="maven-package">
+	<!--通过maven命令调用-->
+	<echo>------------------------------------START----------------------------------</echo>
+	<property name="parject_path" location=".\" />
+	<echo>开始 package</echo>
+	 <exec dir="${parject_path}" executable="cmd.exe">
+	 	<arg line="/c mvn clean package -Dmaven.test.skip=true"/>
+	 </exec>
+	<echo>package 成功！</echo>
+	<echo>------------------------------------END----------------------------------</echo>
+</target>
+<!--Maven install-->
+<target name="maven-install">
+	<!--通过maven命令调用-->
+	<echo>------------------------------------START----------------------------------</echo>
+	<property name="parject_path" location=".\" />
+	<echo>开始 install</echo>
+	 <exec dir="${parject_path}" executable="cmd.exe">
+	 	<arg line="/c mvn clean install -Dmaven.test.skip=true"/>
+	 </exec>
+	<echo>install 成功！</echo>
+	<echo>------------------------------------END----------------------------------</echo>
+</target>
+<!--Maven compile-->
+<target name="maven-compile">
+	<!--通过maven命令调用-->
+	<echo>------------------------------------START----------------------------------</echo>
+	<property name="parject_path" location=".\" />
+	<echo>开始 compile</echo>
+	 <exec dir="${parject_path}" executable="cmd.exe">
+	 	<arg line="/c mvn compile -Dmaven.test.skip=true"/>
+	 </exec>
+	<echo>compile 成功！</echo>
+	<echo>------------------------------------END----------------------------------</echo>
+</target>
+<!--Maven test-compile-->
+<target name="maven-test-compile">
+	<!--通过maven命令调用-->
+	<echo>------------------------------------START----------------------------------</echo>
+	<property name="parject_path" location=".\" />
+	<echo>开始 test-compile</echo>
+	 <exec dir="${parject_path}" executable="cmd.exe">
+	 	<arg line="/c mvn test-compile"/>
+	 </exec>
+	<echo>test-compile 成功！</echo>
+	<echo>------------------------------------END----------------------------------</echo>
+</target>
+<!--Maven test-->
+<target name="maven-test">
+	<!--通过maven命令调用-->
+	<echo>------------------------------------START----------------------------------</echo>
+	<property name="parject_path" location=".\" />
+	<echo>开始 test</echo>
+	 <exec dir="${parject_path}" executable="cmd.exe">
+	 	<arg line="/c mvn test"/>
+	 </exec>
+	<echo>test 成功！</echo>
+	<echo>------------------------------------END----------------------------------</echo>
+</target>
+<!--Maven jar-->
+<target name="maven-jar">
+	<!--通过maven命令调用-->
+	<echo>------------------------------------START----------------------------------</echo>
+	<property name="parject_path" location=".\" />
+	<echo>开始 jar</echo>
+	 <exec dir="${parject_path}" executable="cmd.exe">
+	 	<arg line="/c mvn jar:jar"/>
+	 </exec>
+	<echo>jar 成功！</echo>
+	<echo>------------------------------------END----------------------------------</echo>
+</target>
+<!--Maven deploy-->
+<target name="maven-deploy">
+	<!--通过maven命令调用-->
+	<echo>------------------------------------START----------------------------------</echo>
+	<property name="parject_path" location=".\" />
+	<echo>开始 deploy</echo>
+	 <exec dir="${parject_path}" executable="cmd.exe">
+	 	<arg line="/c mvn deploy"/>
+	 </exec>
+	<echo>deploy 成功！</echo>
+	<echo>------------------------------------END----------------------------------</echo>
+</target>
+</project>

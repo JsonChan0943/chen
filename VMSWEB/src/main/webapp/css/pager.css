@@ -1,0 +1,29 @@
+.current_page
+	{
+	    background: #FFF;
+	    border: #89bdd8 solid 1px;
+	    color: #067db5;
+	}
+	 a {text-decoration:none;}
+		table.gridtable {
+		font-family: verdana,arial,sans-serif;
+		font-size:11px;
+		color:#333333;
+		border-width: 1px;
+		border-color: #666666;
+		border-collapse: collapse;
+	}
+	table.gridtable th {
+		border-width: 1px;
+		padding: 5px;
+		border-style: solid;
+		border-color: #666666;
+		background-color: #eaf2fe;
+	}
+	table.gridtable td {
+		border-width: 1px;
+		padding: 4px;
+		border-style: solid;
+		border-color: #666666;
+		background-color: #ffffff;
+	}

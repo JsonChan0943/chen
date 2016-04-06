@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.tlal.vms.vms.func.user.sbook.dao.SBookDAO"><!-- 映射到手工编写的映射器UserDAO -->
+	<!-- 分页查询SBook信息 -->
+	<select id="findSBookByPage" parameterType="com.tlal.vms.vms.func.user.sbook.action.UserSbookSearch"  
+		resultType="com.tlal.vms.vms.func.user.sbook.pojo.UserSBookPOJO">
+		SELECT A.IDSBOOK as idsbook,A.USERID as userid,A.CARID as carid,A.LESSEE as lessee,A.LEASE as lease,A.STARTDATE as startdate,
+			A.ENDDATE as enddate,A.USEDEPT as usedept,A.ISEXPIRE as isexpire,A.DRIVER as driver,A.COMMENT as comment,B.NAME as username,
+			C.NAME as name,C.PLATE_NUM as plate_num,C.TYPE as type,C.ORIGIN as origin
+			FROM SBOOK A,USER B,CAR C
+			<where>
+				A.USERID = B.USERID AND A.CARID = C.CARID AND B.COMPANY = C.COMPANY
+				<if test='company != null and !"".equals(company)'>
+				  	AND B.COMPANY=#{company}
+			  	</if>
+				<if test='userid != null and !"default".equals(userid)'>
+				  	AND A.USERID=#{userid}
+			  	</if>
+			  	<if test='lessee != null and !"".equals(lessee)'>
+				  	AND A.LESSEE LIKE '%${lessee}%'
+		 	 	</if>
+			  	<if test='lease != null and !"".equals(lease)'>
+				  	AND A.LEASE LIKE '%${lease}%'
+			  	</if>
+			  	<if test='name != null and !"".equals(name)'>
+				  	AND C.NAME LIKE '%${name}%'
+			  	</if>
+			  	<if test='plate_num != null and !"".equals(plate_num)'>
+				  	AND C.PLATE_NUM LIKE '%${plate_num}%'
+			  	</if>
+			  	<if test='type != null and !"".equals(type)'>
+				  	AND C.TYPE LIKE '%${type}%'
+			  	</if>
+			  	<if test='origin != null and !"default".equals(origin)'>
+				  	AND C.ORIGIN=#{origin}
+			  	</if>
+			  	<if test='usedept != null and !"".equals(usedept)'>
+				  	AND A.USEDEPT LIKE '%${usedept}%'
+			  	</if>
+			  	<if test='isexpire != null and !"default".equals(isexpire)'>
+				  	AND A.ISEXPIRE=#{isexpire}
+			  	</if>
+		  	</where>
+		    LIMIT #{startRow},#{pageSize} 
+	</select>
+
+	<!-- 统计SBook表的记录数量 -->
+	<select id="countSBook" parameterType="com.tlal.vms.vms.func.user.sbook.action.UserSbookSearch" resultType="java.lang.Integer">
+		SELECT COUNT(*) FROM 
+		 	SBOOK A,USER B,CAR C
+		<where>
+			A.USERID = B.USERID AND A.CARID = C.CARID AND B.COMPANY = C.COMPANY
+			<if test='company != null and !"".equals(company)'>
+			  	AND B.COMPANY=#{company}
+		  	</if>
+			<if test='userid != null and !"default".equals(userid)'>
+			  	AND A.USERID=#{userid}
+		  	</if>
+		  	<if test='lessee != null and !"".equals(lessee)'>
+			  	AND A.LESSEE LIKE '%${lessee}%'
+	 	 	</if>
+		  	<if test='lease != null and !"".equals(lease)'>
+			  	AND A.LEASE LIKE '%${lease}%'
+		  	</if>
+		  	<if test='name != null and !"".equals(name)'>
+			  	AND C.NAME LIKE '%${name}%'
+		  	</if>
+		  	<if test='plate_num != null and !"".equals(plate_num)'>
+			  	AND C.PLATE_NUM LIKE '%${plate_num}%'
+		  	</if>
+		  	<if test='type != null and !"".equals(type)'>
+			  	AND C.TYPE LIKE '%${type}%'
+		  	</if>
+		  	<if test='origin != null and !"default".equals(origin)'>
+			  	AND C.ORIGIN=#{origin}
+		  	</if>
+		  	<if test='usedept != null and !"".equals(usedept)'>
+			  	AND A.USEDEPT LIKE '%${usedept}%'
+		  	</if>
+		  	<if test='isexpire != null and !"default".equals(isexpire)'>
+			  	AND A.ISEXPIRE=#{isexpire}
+		  	</if>
+	  	</where>
+	</select>
+	<!-- 根据id查找SBook的记录 -->
+	<select id="findSBookById" parameterType="java.lang.String" resultType="com.tlal.vms.vms.func.user.sbook.entity.SBook">
+		SELECT IDSBOOK,USERID,CARID,LESSEE,LEASE,STARTDATE,ENDDATE,USEDEPT,ISEXPIRE,DRIVER,COMMENT
+			FROM SBOOK
+			WHERE IDSBOOK = #{idsbook}
+	</select>
+	
+	<!-- 根据id查找SBook的记录 -->
+	<select id="findByCarId" parameterType="java.lang.String" resultType="com.tlal.vms.vms.func.user.sbook.entity.SBook">
+		SELECT IDSBOOK,USERID,CARID,LESSEE,LEASE,STARTDATE,ENDDATE,USEDEPT,ISEXPIRE,DRIVER,COMMENT
+			FROM SBOOK
+			WHERE CARID = #{carid}
+	</select>
+	
+	<!-- 删除SBook的记录 -->
+	<delete id="deleleSBook" parameterType="java.lang.String">
+		DELETE FROM SBOOK
+			WHERE 
+			IDSBOOK=#{idsbook}
+	</delete>
+	<!-- 设置租赁车辆“已过期” -->
+	<update id="setExpire" parameterType="java.lang.String">
+		UPDATE SBOOK SET
+			ISEXPIRE = 'Y'
+			WHERE idsbook=#{idsbook}
+	</update>
+	<!-- 设置租赁车辆“未过期” -->
+	<update id="setUnExpire" parameterType="java.lang.String">
+		UPDATE SBOOK SET
+			ISEXPIRE = 'N'
+			WHERE idsbook=#{idsbook}
+	</update>
+	
+	<!-- 设置租赁车辆“已过期” -->
+	<update id="updateSbook" parameterType="com.tlal.vms.vms.func.user.sbook.entity.SBook">
+		UPDATE SBOOK SET
+			USERID = #{userid},
+			CARID = #{carid},
+			LESSEE = #{lessee},
+			LEASE = #{lease},
+			STARTDATE = #{startdate},
+			ENDDATE = #{enddate},
+			USEDEPT = #{usedept},
+			ISEXPIRE = #{isexpire},
+			DRIVER = #{driver},
+			COMMENT = #{comment}
+			WHERE idsbook=#{idsbook}
+	</update>
+	
+	<!-- 查找所有未过期的记录 -->
+	<select id="findAllUnExpire" resultType="com.tlal.vms.vms.func.user.sbook.entity.SBook">
+		SELECT IDSBOOK,USERID,CARID,LESSEE,LEASE,STARTDATE,ENDDATE,USEDEPT,ISEXPIRE,DRIVER,COMMENT
+			FROM SBOOK
+			WHERE ISEXPIRE = 'N'
+	</select>
+	
+	<!-- 添加User记录 -->
+	<insert id="addSBook" parameterType="com.tlal.vms.vms.func.user.sbook.entity.SBook">
+		 INSERT INTO SBOOK
+		 (	 IDSBOOK,USERID,CARID,
+		 	 LESSEE,LEASE,STARTDATE,
+		 	 ENDDATE,USEDEPT,ISEXPIRE,
+		 	 DRIVER,COMMENT
+		 ) 
+		 VALUES
+		 (	 #{idsbook,jdbcType=VARCHAR},
+			 #{userid,jdbcType=VARCHAR},
+			 #{carid,jdbcType=VARCHAR},
+			 #{lessee,jdbcType=VARCHAR},
+			 #{lease,jdbcType=VARCHAR},
+			 #{startdate,jdbcType=DATE},
+			 #{enddate,jdbcType=DATE},
+			 #{usedept,jdbcType=VARCHAR},
+	 		 #{isexpire,jdbcType=VARCHAR},
+ 		 	 #{driver,jdbcType=VARCHAR},
+	 	 	 #{comment,jdbcType=VARCHAR}
+	 	 )	 		
+	</insert>
+	<!-- 根据carid查看租用情况 -->
+	<select id="findSBookByCarid" parameterType="java.lang.String" resultType="com.tlal.vms.vms.func.user.sbook.entity.SBook">
+		SELECT IDSBOOK,USERID,CARID,LESSEE,LEASE,STARTDATE,ENDDATE,USEDEPT,ISEXPIRE,DRIVER,COMMENT
+			FROM SBOOK
+			WHERE CARID = #{carid}
+	</select>
+	<!-- 根据userId查找SBook的记录 -->
+	<select id="findSBookByUserId" parameterType="java.lang.String" resultType="com.tlal.vms.vms.func.user.sbook.entity.SBook">
+		SELECT IDSBOOK,USERID,CARID,LESSEE,LEASE,STARTDATE,ENDDATE,USEDEPT,ISEXPIRE,DRIVER,COMMENT
+			FROM SBOOK
+			WHERE USERID = #{userid}
+	</select>
+	
+	<!-- 根据userId查找SBook的记录 -->
+	<select id="findAllSBook" resultType="com.tlal.vms.vms.func.user.sbook.entity.SBook">
+		SELECT IDSBOOK,USERID,CARID,LESSEE,LEASE,STARTDATE,ENDDATE,USEDEPT,ISEXPIRE,DRIVER,COMMENT
+			FROM SBOOK
+	</select>
+	
+	<!-- 分页查询SBook信息 -->
+	<select id="findAllSBooks" resultType="com.tlal.vms.vms.func.user.sbook.pojo.UserSBookPOJO">
+		SELECT A.IDSBOOK as idsbook,A.USERID as userid,A.CARID as carid,A.LESSEE as lessee,A.LEASE as lease,A.STARTDATE as startdate,
+			A.ENDDATE as enddate,A.USEDEPT as usedept,A.ISEXPIRE as isexpire,A.DRIVER as driver,A.COMMENT as comment,B.NAME as username,
+			C.NAME as name,C.PLATE_NUM as plate_num,C.TYPE as type,C.ORIGIN as origin
+			FROM SBOOK A,USER B,CAR C
+		WHERE 
+			A.USERID = B.USERID AND A.CARID = C.CARID AND B.COMPANY = C.COMPANY
+	</select>
+	
+	<!-- 分页查询SBook信息 -->
+	<select id="findAllSBooksByUser" parameterType="java.lang.String" resultType="com.tlal.vms.vms.func.user.sbook.pojo.UserSBookPOJO">
+		SELECT A.IDSBOOK as idsbook,A.USERID as userid,A.CARID as carid,A.LESSEE as lessee,A.LEASE as lease,A.STARTDATE as startdate,
+			A.ENDDATE as enddate,A.USEDEPT as usedept,A.ISEXPIRE as isexpire,A.DRIVER as driver,A.COMMENT as comment,B.NAME as username,
+			C.NAME as name,C.PLATE_NUM as plate_num,C.TYPE as type,C.ORIGIN as origin
+			FROM SBOOK A,USER B,CAR C
+		WHERE 
+			A.USERID = B.USERID AND A.CARID = C.CARID AND B.COMPANY = C.COMPANY
+			AND B.COMPANY = #{company}
+	</select>
+</mapper>
