@@ -13,7 +13,7 @@ import com.tlal.vms.vms.func.admin.car.handler.AdminCarIHandler;
 /**
  * 管理员-汽车逻辑控制器
  * @author Administrator
- *
+ * 我是一个傻逼
  */
 @Namespace("/admin/car")
 public class AdminCarAction extends BaseAction{
