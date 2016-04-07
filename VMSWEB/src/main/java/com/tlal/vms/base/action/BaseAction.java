@@ -21,7 +21,7 @@ import com.tlal.vms.vms.sys.supers.log.service.SuperLogIService;
 /**
  * Action的基础类
  * @author Administrator
- *
+ * 啦啦啦啦啦
  */
 @ParentPackage("basePackage")
 @Namespace("/")
