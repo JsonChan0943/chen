@@ -6,6 +6,8 @@ package com.tlal.vms.base.sysparam;
  *
  */
 public interface ConstantsIHandler {
+	//登陆用户
+	public static final String LOGIN_USER = "loginUser";
 	//用户名username
 	public static final String ROLE = "role";
 	//用户名username

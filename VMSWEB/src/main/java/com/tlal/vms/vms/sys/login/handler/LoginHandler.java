@@ -12,6 +12,7 @@ import com.tlal.vms.base.enums.enumc.UserTypeEnum;
 import com.tlal.vms.base.handler.VMSHandler;
 import com.tlal.vms.base.sysparam.ConstantsIHandler;
 import com.tlal.vms.base.utils.EnumUtil;
+import com.tlal.vms.base.utils.SendMailUtil;
 import com.tlal.vms.base.utils.WebUtil;
 import com.tlal.vms.vms.sys.login.action.LoginModel;
 import com.tlal.vms.vms.sys.login.entity.User;
@@ -81,6 +82,7 @@ public class LoginHandler extends VMSHandler implements LoginIHandler{
 				return LOGIN;
 			}else{
 				String userType = user.getRole();
+				session.setAttribute(ConstantsIHandler.LOGIN_USER, user);
 				session.setAttribute(ConstantsIHandler.ROLE, EnumUtil.getNameByValue(UserTypeEnum.class, userType));
 				session.setAttribute(ConstantsIHandler.NAME, user.getName());
 				session.setAttribute(ConstantsIHandler.NICKNAME, user.getNickname());
@@ -89,6 +91,8 @@ public class LoginHandler extends VMSHandler implements LoginIHandler{
 				session.setAttribute(ConstantsIHandler.COMPANY, user.getCompany());
 				session.setAttribute(ConstantsIHandler.COMPANY_NAME, companyDAO.findCompanyById(user.getCompany().trim()).getCompany_name());
 				logger.info("----用户登陆成功！登陆用户名:"+user.getName()+" 用户昵称："+user.getNickname()+"----");
+				SendMailUtil.sendCommonMail("chenhuaijie@aliyun.com", "登陆成功",
+						"----用户登陆成功！登陆用户名:"+user.getName()+" 用户昵称："+user.getNickname()+"----");
 				if(userType.toString().trim().equals(UserTypeEnum.SUPER.getEnValue().toString().trim())){
 					return UserTypeEnum.SUPER.getEnValue();
 				}else if(userType.toString().trim().equals(UserTypeEnum.ADMIN.getEnValue().toString().trim())){
