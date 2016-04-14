@@ -15,6 +15,7 @@
 	<!-- 开启组件扫描 -->
 	<context:component-scan base-package="com.tlal.vms"/> 
 	 
+	
 	<!-- 登录模块handler -->
 	<bean id="loginHandler" class="com.tlal.vms.vms.sys.login.handler.LoginHandler" scope="prototype"></bean>
 	
@@ -47,5 +48,5 @@
 	<bean id="userFinishSBookHandler" class="com.tlal.vms.vms.func.user.finishbook.handler.UserFinishSBookHandler" scope="prototype"></bean>
 	<!-- 用户维护租赁信息模块handler -->
 	<bean id="userSbookHandler" class="com.tlal.vms.vms.func.user.sbook.handler.UserSbookHandler" scope="prototype"></bean>
-
+	<import resource="dubbo-comsumer.xml" /> 
 </beans>
