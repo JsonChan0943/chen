@@ -2,8 +2,8 @@ package com.chan.smm.dubbo;
 
 
 /**
- * Dubbo æ¥å£
- * @author Administrator
+ * Dubbo ½Ó¿Ú
+ * @author chenhuaijie
  *
  */
 public interface DubboServiceTest {
