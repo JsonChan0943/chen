@@ -68,6 +68,11 @@
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.2.8.v20150217</version>
+				<configuration>
+					<webAppConfig>
+						<contextPath>/system</contextPath>
+					</webAppConfig>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
